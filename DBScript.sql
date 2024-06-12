@@ -1,0 +1,10 @@
+CREATE DATABASE [Quickbase]
+
+USE Quickbase
+
+CREATE TABLE Users (
+	UserID INT IDENTITY(1,1),
+	Login NVARCHAR(255),
+	Name NVARCHAR(255),
+	CreatedOn DATETIME2
+)
