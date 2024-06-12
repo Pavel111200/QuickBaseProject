@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Headers;
+﻿using QuickBaseProject;
 
 string githubToken = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
 string freshdeskToken = Environment.GetEnvironmentVariable("FRESHDESK_TOKEN");
@@ -14,11 +14,13 @@ client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", " 2022-11-28");
 Console.WriteLine("Enter the username");
 string username = Console.ReadLine();
 
-await ProcessRepositoriesAsync(client, username);
+User user = await ProcessUserAsync(client, username);
 
-static async Task ProcessRepositoriesAsync(HttpClient client, string username)
+static async Task<User> ProcessUserAsync(HttpClient client, string username)
 {
-    var json = await client.GetStringAsync($"https://api.github.com/users/{username}");
+    await using Stream stream =
+    await client.GetStreamAsync($"https://api.github.com/users/{username}");
+    var user = await JsonSerializer.DeserializeAsync<User>(stream);
 
-    Console.WriteLine(json);
+    return user;
 }
