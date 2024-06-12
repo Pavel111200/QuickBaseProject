@@ -1,7 +1,11 @@
-﻿using QuickBaseProject;
+﻿using Microsoft.VisualBasic;
+using QuickBaseProject;
+using System.Data.SqlClient;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+
+
 
 Environment.SetEnvironmentVariable("GITHUB_TOKEN", "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");
 Environment.SetEnvironmentVariable("FRESHDESK_TOKEN", "abcdefghij1234567890");
@@ -23,11 +27,34 @@ freshdeskClient.DefaultRequestHeaders.Accept.Clear();
 freshdeskClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 freshdeskClient.DefaultRequestHeaders.Add("Authorization", $"Basic {freshdeskToken +":X"}");
 
+string connectionString = @"Server=.;Database=Quickbase;User Id=sa;Password=SoftUni123!";
+SqlConnection connection = new SqlConnection(connectionString);
+
+
 Console.WriteLine("Enter the username");
 string username = Console.ReadLine();
 
 User user = await ProcessUserAsync(githubClient, username);
-Console.WriteLine(user);
+Console.WriteLine(user.CreationDate);
+
+try
+{
+    connection.Open();
+
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.AppendLine("INSERT INTO Users (Login,Name,CreatedOn)");
+    stringBuilder.AppendLine($"VALUES ('{user.Login}', '{user.Name}', '{user.CreationDate.ToString("yyyy-MM-dd hh:MM:ss")}')");
+
+    using (SqlCommand command = new SqlCommand(stringBuilder.ToString(), connection))
+    {
+        command.ExecuteNonQuery();
+        Console.WriteLine("Success");
+    }
+}
+catch (Exception e)
+{
+    Console.WriteLine("Error" + e.Message);
+}
 
 await CreateContact(freshdeskClient, user);
 
