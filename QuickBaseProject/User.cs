@@ -1,4 +1,6 @@
-﻿namespace QuickBaseProject
+﻿using System.Text.Json.Serialization;
+
+namespace QuickBaseProject
 {
     public record class User(
         [property: JsonPropertyName("name")] string Name,
