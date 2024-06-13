@@ -48,7 +48,7 @@ try
     using (SqlCommand command = new SqlCommand(stringBuilder.ToString(), connection))
     {
         command.ExecuteNonQuery();
-        Console.WriteLine("Success");
+        Console.WriteLine("User successfully added in the database");
     }
 }
 catch (Exception e)
