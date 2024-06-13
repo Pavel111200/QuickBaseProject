@@ -7,7 +7,7 @@ using System.Text.Json;
 
 
 
-Environment.SetEnvironmentVariable("GITHUB_TOKEN", "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");
+Environment.SetEnvironmentVariable("GITHUB_TOKEN", "mysecrettoken");
 Environment.SetEnvironmentVariable("FRESHDESK_TOKEN", "abcdefghij1234567890");
 Environment.SetEnvironmentVariable("FRESHDESK_DOMAIN", "thelocker");
 
@@ -27,7 +27,7 @@ freshdeskClient.DefaultRequestHeaders.Accept.Clear();
 freshdeskClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 freshdeskClient.DefaultRequestHeaders.Add("Authorization", $"Basic {freshdeskToken +":X"}");
 
-string connectionString = @"Server=.;Database=Quickbase;User Id=sa;Password=SoftUni123!";
+string connectionString = @"mysecretconnectionstring";
 SqlConnection connection = new SqlConnection(connectionString);
 
 
